@@ -16,7 +16,7 @@ This is a Fintech App that simulates a digital wallet with features like user re
 
 + Transaction History:
 
-  View a user-friendly dashboard displaying transaction history.
+  View user transaction history.
 
 - Real-Time Notifications:
 
@@ -55,4 +55,118 @@ CurrencyLayer API: Currency conversion.
 
   CurrencyLayer API Key: Sign up at CurrencyLayer.
 
+# Backend Setup
+### Clone the Repository
+- [][]
 
+### Install Dependencies:
+
+
+- npm install
+### Set Up Environment Variables:
+- Create a .env file in the backend folder:
+
+
+```
+DATABASE_URL="postgresql://user:password@localhost:5432/fintech"
+JWT_SECRET="your-jwt-secret-key"
+PAYSTACK_SECRET_KEY="your-paystack-secret-key"
+CURRENCY_LAYER_API_KEY="your-currencylayer-api-key"
+PORT=3000
+```
+### Set Up Database:
+
+### Run Prisma migrations:
+
+```
+npx prisma migrate dev --name init
+
+```
+### Generate Prisma client:
+```
+npx prisma generate
+```
+### Start the Backend Server:
+
+
+```
+npm run dev
+```
+
+# API Endpoints
+### Authentication
+- POST /api/user/register: Register a new user.
+
+* POST /api/user/login: Log in and receive a JWT token.
+
+# Transactions
+
+- POST /api/transaction/initialize-payment: Initialize a payment to add funds.
+
+* POST /api/transaction/verify-payment: Verify a payment and update the user's balance.
+
++ POST /api/transaction/transfer-fund: Transfer funds between users.
+
+- GET /api/transaction/transaction-history: Fetch transaction history for a user.
+
+# WebSocket
+Real-Time Notifications: Listen for notification events on the WebSocket connection.
+
+# Example Requests
+### Register a User
+```
+POST /api/register
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+### Log In
+```
+POST /api/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+### Initialize Payment
+```
+POST /api/initialize-payment
+Content-Type: application/json
+Authorization: Bearer <your-jwt-token>
+
+{
+  "user_id":"31f8ef4a-b031-47c8-ac0e-79fb50649001",
+    "password":"bukky@111",
+    "amount":"2000"
+}
+```
+### Transfer funds
+```
+POST /api/initialize-payment
+Content-Type: application/json
+Authorization: Bearer <your-jwt-token>
+
+{
+  "sender_id": "31f8ef4a-b031-47c8-ac0e-79fb50649001",
+    "receiver_id":"0ee314d8-ce70-43a8-930f-300e685f1fda",
+    "amount":"500",
+    "password":"bukky@111"
+}
+```
+### Fetch Transaction History
+
+```GET /api/transaction-history
+Authorization: Bearer <your-jwt-token>
+{
+   "user_id":"31f8ef4a-b031-47c8-ac0e-79fb50649001",
+    "password":"bukky@111"
+}
+```
+### Real-Time Notifications
+When a transaction occurs fund transfer the server emits a notification event to all connected clients.
