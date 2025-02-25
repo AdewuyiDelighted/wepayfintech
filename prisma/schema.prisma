@@ -12,8 +12,36 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String
-  email String  @unique
+  id                String      @id @unique @default(uuid())
+  first_name        String
+  last_name         String
+  email             String     @unique @db.VarChar(256)
+  password          String
+  balance           Float    @default(0.0)
+  phone_number      String
+  transactionsAsSender Transaction[] @relation("senderTransactions")
+  transactionsAsReceiver Transaction[] @relation("receiverTransactions")
+  notifications Notification[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Transaction {
+  id          String      @id @unique @default(uuid())
+  amount      Float
+  senderId    String
+  receiverId  String
+  sender      User     @relation("senderTransactions", fields: [senderId], references: [id])
+  receiver    User     @relation("receiverTransactions", fields: [receiverId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Notification {
+  id          String      @id @unique @default(uuid())
+  userId      String
+  message     String
+  User        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
 }
