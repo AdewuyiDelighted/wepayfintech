@@ -1,4 +1,4 @@
-## Fintech App - Digital Wallet
+## WEPAY - Digital Wallet
 This is a Fintech App that simulates a digital wallet with features like user registration, login, fund transfers, transaction history, and real-time notifications. The app is built using a Node.js/Express.js backend and a React frontend, with PostgreSQL as the database and WebSockets for real-time notifications.
 
 # Features
