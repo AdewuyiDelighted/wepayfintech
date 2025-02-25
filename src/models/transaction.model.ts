@@ -17,7 +17,7 @@ export interface ICreateTransaction{
 export const transaction_service = {
 
 
-initializePayment:async (email: string, amount: number) => {
+initialize_payment:async (email: string, amount: number) => {
   try {
     const response = await axios.post(
       `${PAYSTACK_BASE_URL}/transaction/initialize`,
@@ -40,7 +40,7 @@ initializePayment:async (email: string, amount: number) => {
 },
 
 
-verifyPayment : async (reference: string) => {
+verify_payment : async (reference: string) => {
   try {
     const response = await axios.get(
       `${PAYSTACK_BASE_URL}/transaction/verify/${reference}`,
