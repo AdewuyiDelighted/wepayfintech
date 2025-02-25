@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { NextFunction,Request,Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 
@@ -30,5 +31,55 @@ export const verifyToken = (token: string): any => {
     return jwt.verify(token, JWT_SECRET);
   } catch (error) {
     throw new Error('Invalid or expired token');
+  }
+};
+
+
+
+
+
+
+
+export const authenticate = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    
+    const authHeader = req.header('Authorization');
+    if (!authHeader) {
+      throw new Error('Access denied. No token provided.');
+    }
+
+    
+    if (!authHeader.startsWith('Bearer ')) {
+      throw new Error('Invalid token format.');
+    }
+
+    
+    const token = authHeader.replace('Bearer ', '');
+
+   
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: number };
+
+   
+    (req as any).user = decoded;
+
+    
+    next();
+  } catch (error: any) {
+    if (error.name === 'TokenExpiredError') {
+       res.status(401).send({
+        status: 'failed',
+        message: 'Token has expired',
+      });
+    }
+    if (error.name === 'JsonWebTokenError') {
+       res.status(401).send({
+        status: 'failed',
+        message: 'Invalid token',
+      });
+    }
+    res.status(500).send({
+      status: 'failed',
+      message: error.message || 'Authentication failed',
+    });
   }
 };
