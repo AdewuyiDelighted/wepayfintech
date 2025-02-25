@@ -26,5 +26,37 @@ export const user_service = {
                 email
             }
         })
+    },
+
+    get_account_by_id:async(id:string)=>{ 
+        return db.user.findUnique({
+            where:{
+                id
+            }
+        })
+    },
+
+    update_user_balance:async(user_id:string,amount:number)=>{
+        return db.user.update({
+            where:{
+                id:user_id
+            },
+            data:{
+                balance:amount
+            }
+        })
+    },
+
+    get_user_balance:async(user_id:string)=>{
+        return db.user.findUnique({
+            where:{
+                id:user_id
+            },
+            select:{
+                balance:true,
+            }
+        })
     }
+
+    
 }
