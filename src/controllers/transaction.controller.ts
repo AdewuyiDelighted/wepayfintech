@@ -28,7 +28,7 @@ export const initialize_payment = async (req: Request, res: Response) => {
     }
 
     amount_check(value.amount)
-    const payment_data = await transaction_service.initializePayment(found_user.email,value.amount);
+    const payment_data = await transaction_service.initialize_payment(found_user.email,value.amount);
 
     
     res.status(200).send({
@@ -58,7 +58,7 @@ export const verify_transaction = async (req: Request, res: Response) => {
   }
 
   
-  const verified_data = await transaction_service.verifyPayment(value.reference)
+  const verified_data = await transaction_service.verify_payment(value.reference)
     const data = {
       amount:verified_data.data.amount,
       sender_id:found_user.id,
