@@ -64,8 +64,41 @@ create_transaction: async (data:ICreateTransaction,transaction_status:Transactio
       sender_id:data.sender_id,
       receiver_id:data.receiver_id ,
       transaction_type:data.transaction_type,
-      transaction_status:transaction_status
+      transaction_status:transaction_status,
+      
     },
   });
 },
+get_user_transactions: async(user_id:string)=>{
+  return db.transaction.findMany({
+    where: {
+      OR: [
+        { sender_id: user_id }, 
+        { receiver_id: user_id }, 
+      ],
+    },
+    include: {
+      sender: {
+        select: {
+          id: true,
+          first_name:true,
+          last_name:true,
+          email: true,
+        },
+      },
+      receiver: {
+        select: {
+          id: true,
+          first_name:true,
+          last_name:true,
+          email: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc', 
+    },
+  })
+
+}
 }
