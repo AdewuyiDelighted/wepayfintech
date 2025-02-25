@@ -9,9 +9,7 @@ export const register_user = async (req: Request, res: Response) =>  {
     console.log("enter one")
     try{  
     const { error,value } = register_user_validator(req.body);
-      console.log("VALUE 1",req.body)
 
-      console.log("VALUE ",value)
       if(error){
         throw new Error(error );
 
@@ -25,7 +23,6 @@ export const register_user = async (req: Request, res: Response) =>  {
 
         console.log("USER ",found_user)
         const hashedPassword = await hashPassword(value.password);
-        // const generated_account_number = a
 
         const user = await user_service.register_user(value,hashedPassword)
         console.log("USER",user)
@@ -50,7 +47,7 @@ export const login = async (req: Request, res: Response) => {
       const { error,value } = login_user_validator(req.body);
       if(error){
         throw new Error(`${error.message}`);
-    }
+      }
         
       const user = await user_service.get_account_by_email(value.email);
       if (!user) {
