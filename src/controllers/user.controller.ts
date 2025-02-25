@@ -13,7 +13,6 @@ export const register_user = async (req: Request, res: Response) =>  {
 
       console.log("VALUE ",value)
       if(error){
-        // throw new Error(error.details[0].message );
         throw new Error(error );
 
        }
@@ -26,6 +25,7 @@ export const register_user = async (req: Request, res: Response) =>  {
 
         console.log("USER ",found_user)
         const hashedPassword = await hashPassword(value.password);
+        // const generated_account_number = a
 
         const user = await user_service.register_user(value,hashedPassword)
         console.log("USER",user)
