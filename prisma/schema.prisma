@@ -55,5 +55,5 @@ enum TransactionType{
 
 enum TransactionStatus{
   FAILED
-  SUCCESSFUL
+  SUCCESSFULL
 }
